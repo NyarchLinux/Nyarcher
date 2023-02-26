@@ -7,6 +7,11 @@ To run, the script assumes you have ha pretty much vanilla Gnome installation, a
 - git
 - svn
 - neofetch
+- npm
+- nodejs
+- btop
+- gnome-menus
+- gnome-shell-extensions
 
 
 ## Install Gnome extensions
