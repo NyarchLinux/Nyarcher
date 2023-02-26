@@ -127,3 +127,14 @@ configure_gsettings() {
   gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 }
 
+install_extensions
+install_nyaofetch
+configure_neofetch
+download_wallpapers
+download_icons
+set_themes
+configure_kitty
+flatpak_overrides
+install_flatpaks
+install_nyarch_apps
+configure_gsettings
