@@ -10,13 +10,14 @@ install_extensions () {
 }
 
 install_nyaofetch() {
-  cd ~/.local/bin  # Install nekofetch and nyaofetch only for current user
+  cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
-  wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nekofetch
-  wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nyaofetch
+  sudo wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nekofetch
+  sudo wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nyaofetch
   # Give the user execution permissions
-  chmod +x nekofetch
-  chmod +x nyaofetch
+  sudo chmod +x nekofetch
+  sudo chmod +x nyaofetch
+
 }
 
 configure_neofetch {
@@ -51,10 +52,12 @@ set_themes() {
 }
 
 configure_kitty (){
+  mkdir ~/.config/kitty
   cd ~/.config/kitty
   mv kitty.conf kitty-backup.conf
   wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/kitty/kitty.conf
 }
+
 
 flatpak_overrides() {
   sudo flatpak override --filesystem=xdg-config/gtk-3.0
@@ -74,6 +77,10 @@ install_flatpaks() {
   flatpak install flathub org.gnome.Lollypop
   # Fragments
   flatpak install flathub de.haeckerfelix.Fragments
+  # Flatseal
+  flatpak install flathub com.github.tchx84.Flatseal
+  # Extension Manager
+  flatpak install flathub com.mattjakeman.ExtensionManager
 }
 
 install_nyarch_apps() {
@@ -85,7 +92,7 @@ install_nyarch_apps() {
   # Install latest release of NyarchWizard through flatpak bundle
   cd /tmp
   wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/nyarchwizard.flatpak 
-  flatpak install nyarchwizard.flatpak
+  flatpak install wizard.flatpak
 
   # Install latest release of NyarchTour through flatpak bundle
   cd /tmp
@@ -96,6 +103,12 @@ install_nyarch_apps() {
   cd /tmp
   wget https://github.com/nyarchlinux/nyarchcustomize/releases/latest/download/nyarchcustomize.flatpak 
   flatpak install nyarchcustomize.flatpak
+ 
+  # Install Nyarch Scripts
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchscript/releases/latest/download/nyarchscript.flatpak
+  flatpak install nyarchscript.flatpak
+  
 }
 
 configure_gsettings() {
@@ -110,7 +123,7 @@ configure_gsettings() {
   dconf load / < 04-wmpreferences  # Add minimize button
   dconf load / < 03-background  # Set gnome terminal and background settings
   # Fix wallpaper settings
-  gsettings set org/gnome/desktop/background picture-uri "$HOME/.local/share/backgrounds/default.png"
-  gsettings set org/gnome/desktop/background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
+  gsettings set org.gnome.desktop.background picture-uri "$HOME/.local/share/backgrounds/default.png"
+  gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 }
 
