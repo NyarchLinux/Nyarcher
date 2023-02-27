@@ -97,7 +97,7 @@ install_nyarch_apps() {
 
   # Install latest release of NyarchWizard through flatpak bundle
   cd /tmp
-  wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/nyarchwizard.flatpak 
+  wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/wizard.flatpak 
   flatpak install wizard.flatpak
 
   # Install latest release of NyarchTour through flatpak bundle
