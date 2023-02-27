@@ -8,7 +8,7 @@ install_extensions () {
   # Set correct permissions
   chmod -R 755 *
 }
-
+https://raw.githubusercontent.com/NyarchLinux/Nyarcher/main/nyarcher.sh?token=GHSAT0AAAAAAB7CTDT6DVBF5MXYRSF355WCY74X5XA
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
@@ -20,7 +20,7 @@ install_nyaofetch() {
 
 }
 
-configure_neofetch {
+configure_neofetch() {
   mv ~/.config/neofetch ~/.config/neofetch-backup  # Backup previous neofetch
   # Install new neofetch files
   cd ~/.config
@@ -31,6 +31,7 @@ download_wallpapers() {
   cd /tmp
   svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/backgrounds
   mv backgrounds/* ~/.local/share/backgrounds/
+  chmod -R 777 ~/.loca/share/backgrounds
 }
 
 download_icons() {
