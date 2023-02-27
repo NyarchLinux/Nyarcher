@@ -2,7 +2,7 @@
 RED='\033[0;31m'
 NC='\033[0m'
 
-curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/s>
+https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/neofetch/ascii70
 echo -e "$RED\n\nWelcome to Nyarch Linux installer! $NC"
 
 install_extensions () {
