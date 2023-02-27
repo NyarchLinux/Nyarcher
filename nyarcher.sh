@@ -34,8 +34,9 @@ configure_neofetch() {
 download_wallpapers() {
   cd /tmp
   svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/backgrounds
+  mkdir -p ~/.local/share/backgrounds/
   mv backgrounds/* ~/.local/share/backgrounds/
-  chmod -R 777 ~/.loca/share/backgrounds
+  chmod -R 777 ~/.local/share/backgrounds
 }
 
 download_icons() {
