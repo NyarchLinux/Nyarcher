@@ -13,7 +13,6 @@ install_extensions () {
   # Set correct permissions
   chmod -R 755 *
 }
-https://raw.githubusercontent.com/NyarchLinux/Nyarcher/main/nyarcher.sh?token=GHSAT0AAAAAAB7CTDT6DVBF5MXYRSF355WCY74X5XA
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
