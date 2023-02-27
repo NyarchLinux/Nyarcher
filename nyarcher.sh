@@ -1,4 +1,9 @@
 #!/bin/sh
+RED='\033[0;31m'
+NC='\033[0m'
+
+curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/s>
+echo -e "$RED\n\nWelcome to Nyarch Linux installer! $NC"
 
 install_extensions () {
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
@@ -128,14 +133,86 @@ configure_gsettings() {
   gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 }
 
-install_extensions
-install_nyaofetch
-configure_neofetch
-download_wallpapers
-download_icons
-set_themes
-configure_kitty
-flatpak_overrides
-install_flatpaks
-install_nyarch_apps
-configure_gsettings
+read -r -p "Are you running this script on a system running Gnome Desktop Environment? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  echo Cool! We can go ahead
+else
+  echo You need to have already Gnome installed and running to run this script!
+  exit
+fi
+
+read -r -p "Have you installed all the dependecies listed in the github page of this script? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  echo Cool! We can go ahead
+else
+  echo You need to have already installed the dependencies listed on github before running this script!
+  exit
+fi
+
+read -r -p "Do you want to install our Gnome extensions, they are important for the overall desktop customization? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_extensions
+  echo "Gnome extensions installed!"
+fi
+read -r -p "Do you want to install Nekofetch and Nyaofetch and configure neofetch, to tell everyone that you use nyarch btw? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_nyaofetch
+  configure_neofetch
+  echo "Nyaofetch and Neofetch installed!"
+fi
+read -r -p "Download Nyarch wallpapers? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  download_wallpapers
+  echo "Wallpapers downloaded!"
+fi
+read -r -p "Do you want to download our icons? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  download_icons
+  echo "Icons downloaded!"
+fi
+read -r -p "Do you want to download our themes? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  set_themes
+  echo "Themes downloaded!"
+fi
+read -r -p "Do you want to apply our customizations to kitty terminal? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  configure_kitty
+  echo "Kitty configured!"
+fi
+read -r -p "Do you want to apply your GTK themes to faltpak apps? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  flatpak_overrides
+  echo "Flatpak themes configured!"
+fi
+read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (You will be able to not download only some of them)? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_flatpaks
+  echo "Suggested apps installed!"
+fi
+read -r -p "Do you want to install Nyarch Exclusive applications? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_nyarch_apps
+  echo "Nyarch apps installed!"
+fi
+read -r -p "Do you want to edit your Gnome settings? Note that if you have not installed something before, you may experience some bugs at the start (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  configure_gsettings
+  echo "Nyarch apps installed!"
+fi
+
+echo -e "$RED Log out and login to see the results! $NC"
+
+
