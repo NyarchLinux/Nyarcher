@@ -72,6 +72,9 @@ flatpak_overrides() {
 
 
 install_flatpaks() {
+  # Add flathub
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  # Themes
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
   # Komikku
   flatpak install flathub info.febvre.Komikku
