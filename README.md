@@ -13,6 +13,11 @@ sudo pacman -S flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop g
 ```
 It is also suggested to install `webapp-manager` and `gnome-terminal-transparency` from the AUR.
 
+### Fedora based distributions
+```bash
+sudo dnf install flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-extensions-app
+```
+
 ## Running the script 
 If you want to learn what the script does, you can read [NYARCHER.md](https://github.com/NyarchLinux/Nyarcher/blob/main/NYARCHER.md) file.
 <br />
