@@ -17,7 +17,10 @@ It is also suggested to install `webapp-manager` and `gnome-terminal-transparenc
 ```bash
 sudo dnf install flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-extensions-app
 ```
-
+### Ubuntu based distributions
+```bash
+sudo apt install flatpak subversion gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extension-prefs
+```
 ## Running the script 
 If you want to learn what the script does, you can read [NYARCHER.md](https://github.com/NyarchLinux/Nyarcher/blob/main/NYARCHER.md) file.
 <br />
