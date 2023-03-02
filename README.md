@@ -9,17 +9,17 @@ Also, some applications, specially Nyarch Scripts, might not work correctly in n
 
 ### Arch-based distributions
 ```bash
-sudo pacman -S flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extensions
+sudo pacman -S curl flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extensions
 ```
 It is also suggested to install `webapp-manager` and `gnome-terminal-transparency` from the AUR.
 
 ### Fedora based distributions
 ```bash
-sudo dnf install flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-extensions-app
+sudo dnf install curl flatpak svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-extensions-app
 ```
 ### Ubuntu based distributions
 ```bash
-sudo apt install flatpak subversion gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extension-prefs
+sudo apt install curl flatpak subversion gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extension-prefs
 ```
 ## Running the script 
 If you want to learn what the script does, you can read [NYARCHER.md](https://github.com/NyarchLinux/Nyarcher/blob/main/NYARCHER.md) file.
