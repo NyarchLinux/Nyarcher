@@ -136,6 +136,12 @@ configure_gsettings() {
   gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 }
 
+add_pywal() {
+echo 'if [[ -f "$HOME/.cache/wal/sequences" ]]; then' >> ~/.bashrc
+echo '    (cat $HOME/.cache/wal/sequences)' >> ~/.bashrc
+echo 'fi' >> ~/.bashrc
+}
+
 read -r -p "Are you running this script on a system running Gnome Desktop Environment? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -160,7 +166,7 @@ then
   install_extensions
   echo "Gnome extensions installed!"
 fi
-read -r -p "Do you want to install Nekofetch and Nyaofetch and configure neofetch, to tell everyone that you use nyarch btw? (Y/n): " response
+read -r -p "[SYSTEM] Do you want to install Nekofetch and Nyaofetch and configure neofetch, to tell everyone that you use nyarch btw? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   install_nyaofetch
@@ -191,6 +197,12 @@ then
   configure_kitty
   echo "Kitty configured!"
 fi
+read -r -p "Do you want to add pywal theming to your ~/.bashrc (for other shells you have to do it manually)? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  add_pywal
+  echo "pywal configured!"
+fi
 read -r -p "Do you want to apply your GTK themes to faltpak apps? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -203,7 +215,7 @@ then
   install_flatpaks
   echo "Suggested apps installed!"
 fi
-read -r -p "Do you want to install Nyarch Exclusive applications? (Y/n): " response
+read -r -p "[SYSTEM] Do you want to install Nyarch Exclusive applications? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   install_nyarch_apps
