@@ -12,16 +12,17 @@ To run, the script assumes you have ha pretty much vanilla Gnome installation, a
 - btop
 - gnome-menus
 - gnome-shell-extensions
+- python-pywal (you can install it on any distro with `sudo pip3 install pywal` if you have python-pip isntalled)
 
 
 ## Install Gnome extensions
 ```bash
-cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
-mv extensions extensions-backup  # Backup old extensions 
-# Download current extensions from main branch
-svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/gnome-shell/extensions
-# Set correct permissions
-chmod -R 755 *
+  cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
+  mv extensions extensions-backup  # Backup old extensions 
+  # Download current extensions from main branch
+  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/gnome-shell/extensions
+  # Set correct permissions
+  chmod -R 755 *
 ```
 ## Install neofetch configuration
 ### Install nyaofetch and nekofetch
@@ -87,57 +88,71 @@ flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 ```
 ### Flatpak apps
 ```bash
-# Komikku
-flatpak install flathub info.febvre.Komikku
-# Flatseal
-flatpak install flathub com.github.tchx84.Flatseal
-# Shortwave
-flatpak install flathub de.haeckerfelix.Shortwave
-# Lollypop
-flatpak install flathub org.gnome.Lollypop
-# Fragments
-flatpak install flathub de.haeckerfelix.Fragments
+  # Add flathub
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  # Themes
+  flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+  # Komikku
+  flatpak install flathub info.febvre.Komikku
+  # Flatseal
+  flatpak install flathub com.github.tchx84.Flatseal
+  # Shortwave
+  flatpak install flathub de.haeckerfelix.Shortwave
+  # Lollypop
+  flatpak install flathub org.gnome.Lollypop
+  # Fragments
+  flatpak install flathub de.haeckerfelix.Fragments
+  # Flatseal
+  flatpak install flathub com.github.tchx84.Flatseal
+  # Extension Manager
+  flatpak install flathub com.mattjakeman.ExtensionManager
 ```
 ### Install Nyarch applications
 ```bash
-# Install latest release of CatgirlDownloader through flatpak bundle
-cd /tmp
-wget https://github.com/nyarchlinux/catgirldownloader/releases/latest/download/catgirldownloader.flatpak 
-flatpak install catgirldownloader.flatpak
+  # Install latest release of CatgirlDownloader through flatpak bundle
+  cd /tmp
+  wget https://github.com/nyarchlinux/catgirldownloader/releases/latest/download/catgirldownloader.flatpak 
+  flatpak install catgirldownloader.flatpak
 
-# Install latest release of NyarchWizard through flatpak bundle
-cd /tmp
-wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/nyarchwizard.flatpak 
-flatpak install nyarchwizard.flatpak
+  # Install latest release of NyarchWizard through flatpak bundle
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/wizard.flatpak 
+  flatpak install wizard.flatpak
 
-# Install latest release of NyarchTour through flatpak bundle
-cd /tmp
-wget https://github.com/nyarchlinux/nyarchtour/releases/latest/download/nyarchtour.flatpak 
-flatpak install nyarchtour.flatpak
+  # Install latest release of NyarchTour through flatpak bundle
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchtour/releases/latest/download/nyarchtour.flatpak 
+  flatpak install nyarchtour.flatpak
 
-# Install latest release of NyarchCustomize
-cd /tmp
-wget https://github.com/nyarchlinux/nyarchcustomize/releases/latest/download/nyarchcustomize.flatpak 
-flatpak install nyarchcustomize.flatpak
+  # Install latest release of NyarchCustomize
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchcustomize/releases/latest/download/nyarchcustomize.flatpak 
+  flatpak install nyarchcustomize.flatpak
+ 
+  # Install Nyarch Scripts
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchscript/releases/latest/download/nyarchscript.flatpak
+  flatpak install nyarchscript.flatpak
 ```
 ### Set gnome settings
 ```bash
-dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
-cd /tmp
-# Download default settings
-svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/dconf/db/local.d
-cd local.d
-# Load settings
-dconf load / < 06-extensions  # Load extensions settings
-dconf load / < 02-interface  # Load theme settings
-dconf load / < 04-wmpreferences  # Add minimize button
-dconf load / < 03-background  # Set gnome terminal and background settings
-# Fix wallpaper settings
-gsettings set org/gnome/desktop/background picture-uri "$HOME/.local/share/backgrounds/default.png"
-gsettings set org/gnome/desktop/background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
+  dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
+  cd /tmp
+  # Download default settings
+  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/dconf/db/local.d
+  cd local.d
+  # Load settings
+  dconf load / < 06-extensions  # Load extensions settings
+  dconf load / < 02-interface  # Load theme settings
+  dconf load / < 04-wmpreferences  # Add minimize button
+  dconf load / < 03-background  # Set gnome terminal and background settings
+  # Fix wallpaper settings
+  gsettings set org.gnome.desktop.background picture-uri "$HOME/.local/share/backgrounds/default.png"
+  gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 ```
-
-
-# Things missing from the script
-- [ ] Plymouth
-- [ ] Shortwave radio stations
+### Add pywal theming to your Bashrc
+```bash
+echo 'if [[ -f "$HOME/.cache/wal/sequences" ]]; then' >> ~/.bashrc
+echo '    (cat $HOME/.cache/wal/sequences)' >> ~/.bashrc
+echo 'fi' >> ~/.bashrc
+```
