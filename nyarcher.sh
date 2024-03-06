@@ -4,14 +4,18 @@ NC='\033[0m'
 
 curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/neofetch/ascii70
 echo -e "$RED\n\nWelcome to Nyarch Linux installer! $NC"
+echo -e "$RED\n\nDowqnloading the repository... $NC"
+cd /tmp
+git clone https://github.com/NyarchLinux/NyarchLinux.git
+cd /tmp/NyarchLinux
 
 install_extensions () {
-  cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
-  mv extensions extensions-backup  # Backup old extensions 
+  # Backup old extensions 
+  mv ~/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell/extensions-backup 
   # Download current extensions from main branch
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/gnome-shell/extensions
+  cp -a /tmp/NyarchLinux/Gnome/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell/extensions
   # Set correct permissions
-  chmod -R 755 *
+  chmod -R 755 ~/.local/share/gnome-shell/extensions
 }
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
@@ -21,40 +25,36 @@ install_nyaofetch() {
   # Give the user execution permissions
   sudo chmod +x nekofetch
   sudo chmod +x nyaofetch
-
 }
 
 configure_neofetch() {
   mv ~/.config/neofetch ~/.config/neofetch-backup  # Backup previous neofetch
   # Install new neofetch files
   cd ~/.config
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/neofetch
+  cp -a /tmp/NyarchLinux/Gnome/etc/skel/.config/neofetch neofetch
 }
 
 download_wallpapers() {
-  cd /tmp
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/backgrounds
+  mv ~/.local/share/backgrounds ~/.local/share/backgroundsbackup # Backup backgrounds
   mkdir -p ~/.local/share/backgrounds/
-  mv backgrounds/* ~/.local/share/backgrounds/
+  cp -a /tmp/NyarchLinux/Gnome/etc/skel/.local/share/backgrounds ~/.local/share/backgrounds
   chmod -R 777 ~/.local/share/backgrounds
 }
 
 download_icons() {
-  cd ~/.local/share
-  mv icons icons-backup  # Backup icons
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/icons
+  mv ~/.local/share/icons ~/.local/share/icons-backup  # Backup icons
+  mv /tmp/NyarchLinux/Gnome/etc/skel/.local/share/icons ~/.local/share/icons
 }
 
 set_themes() {
-  cd ~/.local/share
-  mv themes themes-backup  # Backup icons
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/themes
+  mv ~/.local/share/themes ~/.local/share/themes-backup  # Backup themes
+  mv /tmp/NyarchLinux/Gnome/etc/skel/.local/share/themes ~/.local/share/themes
   cd ~/.config
   # Set GTK4 and GTK3 themes
   mv gtk-3.0 gtk-3.0-backup
   mv gtk-4.0 gtk-4.0-backup
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/gtk-3.0
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/gtk-4.0
+  cp -a /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-3.0 gtk-3.0
+  cp -a /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-4.0 gtk-4.0
 }
 
 configure_kitty (){
@@ -122,9 +122,8 @@ install_nyarch_apps() {
 
 configure_gsettings() {
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
-  cd /tmp
   # Download default settings
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/dconf/db/local.d
+  cd /tmp/NyarchLinux/Gnome/etc/dconf/db/local.d
   cd local.d
   # Load settings
   dconf load / < 06-extensions  # Load extensions settings
