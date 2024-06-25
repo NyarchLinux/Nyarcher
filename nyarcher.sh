@@ -203,7 +203,7 @@ then
   add_pywal
   echo "pywal configured!"
 fi
-read -r -p "Do you want to apply your GTK themes to faltpak apps? (Y/n): " response
+read -r -p "Do you want to apply your GTK themes to flatpak apps? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   flatpak_overrides
