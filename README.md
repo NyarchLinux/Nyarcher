@@ -1,3 +1,6 @@
+# At the moment the script is not working, we are still working to fix it!
+
+
 # Nyarcher
 Nyarcher is a Shell script to install [Nyarch Linux](https://github.com/NyarchLinux/NyarchLinux) customizations on many Linux Distributions
 
