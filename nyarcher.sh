@@ -46,6 +46,8 @@ install_extensions () {
   
   # Install material you icons 
   cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/nyarch ~/.config
+  cd ~/.config/nyarch
+  get clone https://github.com/vinceliuice/Tela-circle-icon-theme
 }
 
 install_nyaofetch() {
