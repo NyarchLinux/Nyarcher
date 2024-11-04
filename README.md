@@ -11,7 +11,7 @@ If something goes wrong, by creating a new user on your distribution, you won't 
 
 ### Arch-based distributions
 ```bash
-sudo pacman -S curl python-pip flatpak gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extensions tar
+sudo pacman -S curl python-pip flatpak gnome-menus kitty wget git fastfetch npm nodejs pacman-contrib gnome-menus gnome-shell-extensions tar
 sudo pacman -S python-pywal
 ```
 It is also suggested to install `webapp-manager` and `gnome-terminal-transparency` from the AUR.
