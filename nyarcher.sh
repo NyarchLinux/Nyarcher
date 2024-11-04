@@ -15,6 +15,7 @@ get_tarball() {
     if [ ! -f "$file_path" ]; then
         echo "Downloading Nyarch tarball from $url"
         wget -q -O "$file_path" "$url"
+        cd /tmp
         tar -xvf /tmp/NyarchLinux.tar.gz
     else
         echo "Using cached Nyarch tarball"
