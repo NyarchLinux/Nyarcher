@@ -28,7 +28,7 @@ install_extensions () {
   mv extensions extensions-backup  # Backup old extensions 
 
   get_tarball
-  cp -rf /tmp/NyarchLinux/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
   
   # Install material you
   cd /tmp
@@ -45,7 +45,7 @@ install_extensions () {
   chmod -R 755 extensions/*
   
   # Install material you icons 
-  cp -rf /tmp/NyarchLinux/etc/skel/.config/nyarch ~/.config
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/nyarch ~/.config
 }
 
 install_nyaofetch() {
@@ -62,13 +62,13 @@ configure_neofetch() {
   get_tarball
   mv ~/.config/fastfetch ~/.config/fastfetch-backup  # Backup previous fastfetch
   # Install new fastfetch files
-  cp -rf /tmp/NyarchLinux/etc/skel/.config/fastfetch ~/.config
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/fastfetch ~/.config
 }
 
 download_wallpapers() {
   cd /tmp
-  wget ${BASE_RELEASE_URL}wallpaper.tar.gz
-  tar -xvf wallpapers.tar.gz
+  wget ${RELEASE_LINK}wallpaper.tar.gz
+  tar -xvf wallpaper.tar.gz
   cd wallpaper 
   bash install.sh
 }
@@ -76,7 +76,7 @@ download_wallpapers() {
 # TODO CONTINUE
 download_icons() {
   cd /tmp 
-  wget ${BASE_RELEASE_URL}icons.tar.gz
+  wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
   cp -rf Tela-circle-MaterialYou ~/.local/share/icons/
 }
@@ -85,13 +85,13 @@ set_themes() {
   cd ~/.local/share
   mv themes themes-backup  # Backup icons
   get_tarball
-  cp -rf /tmp/NyarchLinux/etc/skel/.local/share/themes ~/.local/share
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.local/share/themes ~/.local/share
   cd ~/.config
   # Set GTK4 and GTK3 themes
   mv gtk-3.0 gtk-3.0-backup
   mv gtk-4.0 gtk-4.0-backup
-  cp -rf /tmp/NyarchLinux/etc/skel/.config/gtk-3.0 ~/.config
-  cp -rf /tmp/NyarchLinux/etc/skel/.config/gtk-4.0 ~/.config
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-3.0 ~/.config
+  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-4.0 ~/.config
 }
 
 configure_kitty (){
@@ -184,7 +184,7 @@ configure_gsettings() {
   cd /tmp
   # Download default settings
   get_tarball
-  cd /tmp/NyarchLinux/etc/dconf/db/local.d
+  cd /tmp/NyarchLinux/Gnome/etc/dconf/db/local.d
   # Load settings
   dconf load / < 06-extensions  # Load extensions settings
   dconf load / < 02-interface  # Load theme settings
