@@ -1,67 +1,103 @@
 #!/bin/sh
+RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/24.11/"
+TAG_PATH="https://github.com/NyarchLinux/NyarchLinux/tree/24.11/Gnome/"
+
 RED='\033[0;31m'
 NC='\033[0m'
 
 curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/neofetch/ascii70
-echo -e "$RED\n\nWelcome to Nyarch Linux installer! $NC"
+echo -e "$RED\n\nWelcome to Nyarch Linux customization installer! $NC"
+
+get_tarball() {
+    file_path=/tmp/NyarchLinux.tar.gz
+    url=${RELEASE_LINK}NyarchLinux.tar.gz
+
+    if [ ! -f "$file_path" ]; then
+        echo "Downloading Nyarch tarball from $url"
+        wget -q -O "$file_path" "$url"
+        tar -xvf /tmp/NyarchLinux.tar.gz
+    else
+        echo "Using cached Nyarch tarball"
+    fi
+}
 
 install_extensions () {
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
+  echo "Backup old extensions to extensions-backup..."
   mv extensions extensions-backup  # Backup old extensions 
-  # Download current extensions from main branch
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/gnome-shell/extensions
-  # Set correct permissions
-  chmod -R 755 *
+
+  get_tarball
+  cp -rf /tmp/NyarchLinux/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
+  
+  # Install material you
+  cd /tmp
+  git clone https://github.com/FrancescoCaracciolo/material-you-colors.git
+  cd material-you-colors
+  make build
+  make install
+  npm install --prefix $HOME/.local/share/gnome-shell/extensions/material-you-colors@francescocaracciolo.github.io;
+  cd $HOME/.local/share/gnome-shell/extensions/material-you-colors@francescocaracciolo.github.io
+  git clone https://github.com/francescocaracciolo/adwaita-material-you
+  cd adwaita-material-you
+  bash local-install.sh
+  # Set correct permissions 
+  chmod -R 755 extensions/*
+  
+  # Install material you icons 
+  cp -rf /tmp/NyarchLinux/etc/skel/.config/nyarch ~/.config
 }
+
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
-  sudo wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nekofetch
-  sudo wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/usr/local/bin/nyaofetch
+  sudo wget ${TAG_PATH}usr/local/bin/nekofetch
+  sudo wget ${TAG_PATH}usr/local/bin/nyaofetch
   # Give the user execution permissions
   sudo chmod +x nekofetch
   sudo chmod +x nyaofetch
-
 }
 
 configure_neofetch() {
-  mv ~/.config/neofetch ~/.config/neofetch-backup  # Backup previous neofetch
-  # Install new neofetch files
-  cd ~/.config
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/neofetch
+  get_tarball
+  mv ~/.config/fastfetch ~/.config/fastfetch-backup  # Backup previous fastfetch
+  # Install new fastfetch files
+  cp -rf /tmp/NyarchLinux/etc/skel/.config/fastfetch ~/.config
 }
 
 download_wallpapers() {
   cd /tmp
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/backgrounds
-  mkdir -p ~/.local/share/backgrounds/
-  mv backgrounds/* ~/.local/share/backgrounds/
-  chmod -R 777 ~/.local/share/backgrounds
+  wget ${BASE_RELEASE_URL}wallpaper.tar.gz
+  tar -xvf wallpapers.tar.gz
+  cd wallpaper 
+  bash install.sh
 }
 
+# TODO CONTINUE
 download_icons() {
-  cd ~/.local/share
-  mv icons icons-backup  # Backup icons
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/icons
+  cd /tmp 
+  wget ${BASE_RELEASE_URL}icons.tar.gz
+  tar -xvf icons.tar.gz
+  cp -rf Tela-circle-MaterialYou ~/.local/share/icons/
 }
 
 set_themes() {
   cd ~/.local/share
   mv themes themes-backup  # Backup icons
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.local/share/themes
+  get_tarball
+  cp -rf /tmp/NyarchLinux/etc/skel/.local/share/themes ~/.local/share
   cd ~/.config
   # Set GTK4 and GTK3 themes
   mv gtk-3.0 gtk-3.0-backup
   mv gtk-4.0 gtk-4.0-backup
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/gtk-3.0
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/skel/.config/gtk-4.0
+  cp -rf /tmp/NyarchLinux/etc/skel/.config/gtk-3.0 ~/.config
+  cp -rf /tmp/NyarchLinux/etc/skel/.config/gtk-4.0 ~/.config
 }
 
 configure_kitty (){
   mkdir ~/.config/kitty
   cd ~/.config/kitty
   mv kitty.conf kitty-backup.conf
-  wget https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/kitty/kitty.conf
+  wget ${TAG_PATH}etc/skel/.config/kitty/kitty.conf
 }
 
 
@@ -90,6 +126,8 @@ install_flatpaks() {
   flatpak install flathub com.github.tchx84.Flatseal
   # Extension Manager
   flatpak install flathub com.mattjakeman.ExtensionManager
+  # GearLever
+  flatpak install flathub it.mijorus.gearlever
 }
 
 install_nyarch_apps() {
@@ -117,23 +155,40 @@ install_nyarch_apps() {
   cd /tmp
   wget https://github.com/nyarchlinux/nyarchscript/releases/latest/download/nyarchscript.flatpak
   flatpak install nyarchscript.flatpak
+
+  # Install Waifu Downloader
+  cd /tmp 
+  wget https://github.com/nyarchlinux/waifu-downloader/releases/latest/download/waifudownloader.flatpak
+  flatpak install waifudownloader.flatpak
   
+}
+
+install_nyarch_assistant() {
+  # Install Nyarch Assistant
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchassistant/releases/latest/download/nyarchassistant.flatpak
+  flatpak install nyarchassistant.flatpak
+}
+
+install_nyarch_updater() {
+  # Install Nyarch Updater
+  cd /tmp
+  wget https://github.com/nyarchlinux/nyarchupdater/releases/latest/download/nyarchupdater.flatpak
+  flatpak install nyarchupdater.flatpak
+  sudo bash -c 'echo 241104 > /version'
 }
 
 configure_gsettings() {
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
   cd /tmp
   # Download default settings
-  svn checkout https://github.com/NyarchLinux/NyarchLinux/trunk/Gnome/etc/dconf/db/local.d
-  cd local.d
+  get_tarball
+  cd /tmp/NyarchLinux/etc/dconf/db/local.d
   # Load settings
   dconf load / < 06-extensions  # Load extensions settings
   dconf load / < 02-interface  # Load theme settings
   dconf load / < 04-wmpreferences  # Add minimize button
   dconf load / < 03-background  # Set gnome terminal and background settings
-  # Fix wallpaper settings
-  gsettings set org.gnome.desktop.background picture-uri "$HOME/.local/share/backgrounds/default.png"
-  gsettings set org.gnome.desktop.background picture-uri-dark "$HOME/.local/share/backgrounds/default.png"
 }
 
 add_pywal() {
@@ -221,12 +276,27 @@ then
   install_nyarch_apps
   echo "Nyarch apps installed!"
 fi
+read -r -p "[SYSTEM] Do you want to install Nyarch Assistant, our Waifu AI Assistant? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then 
+  install_nyarch_assistant
+  echo "Nyarch Assistant installed!"
+fi 
+read -r -p "[SYSTEM] Do you want to install Nyarch Updater? It's going to have some issues outside of Nyarch and Arch in general (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_nyarch_updater
+  echo "Nyarch Updater installed!"
+fi
+
 read -r -p "Do you want to edit your Gnome settings? Note that if you have not installed something before, you may experience some bugs at the start (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   configure_gsettings
   echo "Nyarch apps installed!"
 fi
+
+
 
 echo -e "$RED Log out and login to see the results! $NC"
 
