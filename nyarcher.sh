@@ -1,6 +1,6 @@
 #!/bin/sh
 RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/24.11/"
-TAG_PATH="https://github.com/NyarchLinux/NyarchLinux/tree/24.11/Gnome/"
+TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/24.11/Gnome/"
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -78,7 +78,7 @@ download_icons() {
   cd /tmp 
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
-  cp -rf Tela-circle-MaterialYou ~/.local/share/icons/
+  cp -rf Tela-circle-MaterialYou ~/.local/share/icons/Tela-circle-MaterialYou
 }
 
 set_themes() {
