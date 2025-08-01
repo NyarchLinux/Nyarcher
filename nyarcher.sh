@@ -1,6 +1,6 @@
 #!/bin/sh
-RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/24.11/"
-TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/24.11/Gnome/"
+RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/25.0.2/"
+TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/25.0.2/Gnome/"
 
 RED='\033[0;31m'
 NC='\033[0m'
