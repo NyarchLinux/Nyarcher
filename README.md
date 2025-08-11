@@ -18,14 +18,14 @@ It is also suggested to install `webapp-manager` and `gnome-terminal-transparenc
 
 ### Fedora based distributions
 ```bash
-sudo dnf install curl flatpak python3-pip svn gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-extensions-app
+sudo dnf install curl flatpak python3-pip svn gnome-menus kitty wget git fastfetch npm nodejs btop gnome-menus gnome-extensions-app
 sudo pip3 install pywal
 sudo cp /usr/local/bin/wal /usr/bin/wal
 ```
 NOTE: wal needs to be in /usr/bin/wal, this is the reason of the last command
 ### Ubuntu based distributions
 ```bash
-sudo apt install curl python3-pip flatpak subversion gnome-menus kitty wget git neofetch npm nodejs btop gnome-menus gnome-shell-extension-prefs
+sudo apt install curl python3-pip flatpak subversion gnome-menus kitty wget git fastfetch npm nodejs btop gnome-menus gnome-shell-extension-prefs
 sudo pip3 install pywal
 ```
 ## Running the script 
