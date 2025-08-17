@@ -1,6 +1,8 @@
-#!/bin/sh
-RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/25.0.2/"
-TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/25.0.2/Gnome/"
+#!/bin/bash
+
+LATEST_TAG_VERSION=`curl -s https://api.github.com/repos/NyarchLinux/NyarchLinux/releases/latest | grep "tag_name" | awk -F'"' '/tag_name/ {print $4}'`
+RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/$LATEST_TAG_VERSION/"
+TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/$LATEST_TAG_VERSION/Gnome/"
 
 RED='\033[0;31m'
 NC='\033[0m'
