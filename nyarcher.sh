@@ -1,12 +1,33 @@
-#!/bin/sh
-RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/25.0.2/"
-TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/25.0.2/Gnome/"
+#!/bin/bash
+
+LATEST_TAG_VERSION=`curl -s https://api.github.com/repos/NyarchLinux/NyarchLinux/releases/latest | grep "tag_name" | awk -F'"' '/tag_name/ {print $4}'`
+RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/$LATEST_TAG_VERSION/"
+TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/$LATEST_TAG_VERSION/Gnome/"
 
 RED='\033[0;31m'
 NC='\033[0m'
 
 curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/neofetch/ascii70
 echo -e "$RED\n\nWelcome to Nyarch Linux customization installer! $NC"
+
+
+check_gnome_version() {
+  GNOME_VERSION=`gnome-session --version`
+  GNOME_VERSION_NUMBER=${GNOME_VERSION##* }
+  GNOME_VERSION_MAJOR=${GNOME_VERSION_NUMBER%%.*}
+  if [ "$GNOME_VERSION_MAJOR" -lt 47 ]; then
+    echo "You need Gnome version 47 or above."
+    exit
+  fi
+}
+
+check_gnome_is_running() {
+  CURRENT_ENV=${XDG_CURRENT_DESKTOP,,}
+  if [[ $CURRENT_ENV != *"gnome"* ]]; then
+    echo "Gnome isn't running, please launch gnome environment first"
+    exit
+  fi
+}
 
 get_tarball() {
     file_path=/tmp/NyarchLinux.tar.gz
@@ -23,6 +44,8 @@ get_tarball() {
 }
 
 install_extensions () {
+  check_gnome_version
+  check_gnome_is_running
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
   echo "Backup old extensions to extensions-backup..."
   mv extensions extensions-backup  # Backup old extensions 
@@ -182,6 +205,8 @@ install_nyarch_updater() {
 }
 
 configure_gsettings() {
+  check_gnome_version
+  check_gnome_is_running
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
   cd /tmp
   # Download default settings
@@ -200,14 +225,11 @@ echo '    (cat $HOME/.cache/wal/sequences)' >> ~/.bashrc
 echo 'fi' >> ~/.bashrc
 }
 
-read -r -p "Are you running this script on a system running Gnome Desktop Environment? (Y/n): " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
-  echo Cool! We can go ahead
-else
-  echo You need to have already Gnome installed and running to run this script!
-  exit
-fi
+
+## EXECUTION PART
+
+check_gnome_version
+check_gnome_is_running
 
 read -r -p "Have you installed all the dependecies listed in the github page of this script? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
