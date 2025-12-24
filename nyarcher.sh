@@ -184,7 +184,7 @@ install_nyarch_apps() {
 
   # Install Waifu Downloader
   cd /tmp 
-  wget https://github.com/NyarchLinux/WaifuDownloader/releases/download/0.3.0/waifudownloader.flatpak
+  wget https://github.com/NyarchLinux/WaifuDownloader/releases/download/latest/waifudownloader.flatpak
   flatpak install waifudownloader.flatpak
   
 }
