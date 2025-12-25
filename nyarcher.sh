@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LATEST_TAG_VERSION=`curl -s https://api.github.com/repos/NyarchLinux/NyarchLinux/releases/latest | grep "tag_name" | awk -F'"' '/tag_name/ {print $4}'`
-RELEASE_LINK="https://github.com/NyarchLinux/NyarchLinux/releases/download/$LATEST_TAG_VERSION/"
+RELEASE_LINK="github.com/NyarchLinux/NyarchLinux/releases/latest/download/"
 TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/$LATEST_TAG_VERSION/Gnome/"
 
 RED='\033[0;31m'
@@ -37,20 +37,17 @@ get_tarball() {
         echo "Downloading Nyarch tarball from $url"
         wget -q -O "$file_path" "$url"
         cd /tmp
-        tar -xvf /tmp/NyarchLinux.tar.gz
+        tar -xvf "$file_path"
     else
         echo "Using cached Nyarch tarball"
     fi
 }
 
 install_extensions () {
-  check_gnome_version
-  check_gnome_is_running
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
   echo "Backup old extensions to extensions-backup..."
   mv extensions extensions-backup  # Backup old extensions 
 
-  get_tarball
   cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
   
   # Install material you
@@ -235,6 +232,7 @@ read -r -p "Have you installed all the dependecies listed in the github page of 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   echo Cool! We can go ahead
+  get_tarball
 else
   echo You need to have already installed the dependencies listed on github before running this script!
   exit
