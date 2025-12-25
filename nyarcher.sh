@@ -62,7 +62,8 @@ install_extensions () {
   cd adwaita-material-you
   bash local-install.sh
   # Set correct permissions 
-  chmod -R 755 extensions/*
+  cd
+  chmod -R 755 /.local/share/gnome-shell/extensions/*
   
   # Install material you icons 
   cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/nyarch ~/.config
@@ -73,8 +74,8 @@ install_extensions () {
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
-  sudo wget ${TAG_PATH}usr/local/bin/nekofetch
-  sudo wget ${TAG_PATH}usr/local/bin/nyaofetch
+  cp /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch ~
+  cp /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nyaofetch ~
   # Give the user execution permissions
   sudo chmod +x nekofetch
   sudo chmod +x nyaofetch
