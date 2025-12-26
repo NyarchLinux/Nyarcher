@@ -2,7 +2,6 @@
 
 LATEST_TAG_VERSION=`curl -s https://api.github.com/repos/NyarchLinux/NyarchLinux/releases/latest | grep "tag_name" | awk -F'"' '/tag_name/ {print $4}'`
 RELEASE_LINK="github.com/NyarchLinux/NyarchLinux/releases/latest/download/"
-TAG_PATH="https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/refs/tags/$LATEST_TAG_VERSION/Gnome/"
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -37,7 +36,7 @@ get_tarball() {
         echo "Downloading Nyarch tarball from $url"
         wget -q -O "$file_path" "$url"
         cd /tmp
-        tar -xvf "$file_path"
+        tar -xf "$file_path"
     else
         echo "Using cached Nyarch tarball"
     fi
@@ -46,9 +45,9 @@ get_tarball() {
 install_extensions () {
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
   echo "Backup old extensions to extensions-backup..."
-  mv extensions extensions-backup  # Backup old extensions 
+  mv -f extensions extensions-backup  # Backup old extensions 
 
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.local/share/gnome-shell/extensions ~/.local/share/gnome-shell
   
   # Install material you
   cd /tmp
@@ -66,7 +65,7 @@ install_extensions () {
   chmod -R 755 /.local/share/gnome-shell/extensions/*
   
   # Install material you icons 
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/nyarch ~/.config
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/nyarch ~/.config
   cd ~/.config/nyarch
   git clone https://github.com/vinceliuice/Tela-circle-icon-theme
 }
@@ -85,7 +84,7 @@ configure_neofetch() {
   get_tarball
   mv ~/.config/fastfetch ~/.config/fastfetch-backup  # Backup previous fastfetch
   # Install new fastfetch files
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/fastfetch ~/.config
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/fastfetch ~/.config
 }
 
 download_wallpapers() {
@@ -101,27 +100,27 @@ download_icons() {
   cd /tmp 
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
-  cp -rf Tela-circle-MaterialYou ~/.local/share/icons/Tela-circle-MaterialYou
+  cp -rf Tela-circle-MaterialYou-6d3900 ~/.local/share/icons/Tela-circle-MaterialYou #you may want to update the number (Tela-circle-MaterialYou-6d3900)
 }
 
 set_themes() {
   cd ~/.local/share
   mv themes themes-backup  # Backup icons
   get_tarball
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.local/share/themes ~/.local/share
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.local/share/themes ~/.local/share
   cd ~/.config
   # Set GTK4 and GTK3 themes
   mv gtk-3.0 gtk-3.0-backup
   mv gtk-4.0 gtk-4.0-backup
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-3.0 ~/.config
-  cp -rf /tmp/NyarchLinux/Gnome/etc/skel/.config/gtk-4.0 ~/.config
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/gtk-3.0 ~/.config
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/gtk-4.0 ~/.config
 }
 
 configure_kitty (){
   mkdir ~/.config/kitty
   cd ~/.config/kitty
   mv kitty.conf kitty-backup.conf
-  wget ${TAG_PATH}etc/skel/.config/kitty/kitty.conf
+  cp /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/kitty.conf ~
 }
 
 
@@ -209,7 +208,7 @@ configure_gsettings() {
   cd /tmp
   # Download default settings
   get_tarball
-  cd /tmp/NyarchLinux/Gnome/etc/dconf/db/local.d
+  cd /tmp/NyarchLinuxComp/Gnome/etc/dconf/db/local.d
   # Load settings
   dconf load / < 06-extensions  # Load extensions settings
   dconf load / < 02-interface  # Load theme settings
