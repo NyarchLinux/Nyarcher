@@ -87,7 +87,7 @@ download_wallpapers() {
   cd /tmp
   wget ${RELEASE_LINK}wallpaper.tar.gz
   tar -xvf wallpaper.tar.gz
-  bash install.sh
+  sh install.sh
 
   # installs the rest
   cd $HOME/.local/share/
