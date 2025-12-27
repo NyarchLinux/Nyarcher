@@ -58,7 +58,7 @@ install_extensions () {
   bash local-install.sh
   # Set correct permissions 
   cd
-  chmod -R 755 /.local/share/gnome-shell/extensions/* #bug
+  chmod -R 755 $HOME/.local/share/gnome-shell/extensions/*
   
   # Install material you icons 
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/nyarch ~/.config
@@ -69,8 +69,8 @@ install_extensions () {
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
-  cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch .
-  cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nyaofetch .
+  sudo cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch .
+  sudo cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nyaofetch .
   # Give the user execution permissions
   sudo chmod +x nekofetch
   sudo chmod +x nyaofetch
@@ -136,21 +136,7 @@ install_flatpaks() {
   # Themes
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
   # Komikku
-  flatpak install flathub info.febvre.Komikku
-  # Flatseal
-  flatpak install flathub com.github.tchx84.Flatseal
-  # Shortwave
-  flatpak install flathub de.haeckerfelix.Shortwave
-  # Lollypop
-  flatpak install flathub org.gnome.Lollypop
-  # Fragments
-  flatpak install flathub de.haeckerfelix.Fragments
-  # Flatseal
-  flatpak install flathub com.github.tchx84.Flatseal
-  # Extension Manager
-  flatpak install flathub com.mattjakeman.ExtensionManager
-  # GearLever
-  flatpak install flathub it.mijorus.gearlever
+  flatpak install flathub info.febvre.Komikku com.github.tchx84.Flatseal de.haeckerfelix.Shortwave org.gnome.Lollypop de.haeckerfelix.Fragments com.mattjakeman.ExtensionManager it.mijorus.gearlever
 }
 
 install_nyarch_apps() {
