@@ -32,14 +32,10 @@ get_tarball() {
     file_path=/tmp/NyarchLinux.tar.gz
     url=${RELEASE_LINK}NyarchLinux.tar.gz
 
-    if [ ! -f "$file_path" ]; then
-        echo "Downloading Nyarch tarball from $url"
-        wget -q -O "$file_path" "$url"
-        cd /tmp
-        tar -xf "$file_path"
-    else
-        echo "Using cached Nyarch tarball"
-    fi
+    echo "Downloading Nyarch tarball from $url"
+    wget -q -O "$file_path" "$url"
+    cd /tmp
+    tar -xf "$file_path"
 }
 
 install_extensions () {
@@ -62,7 +58,7 @@ install_extensions () {
   bash local-install.sh
   # Set correct permissions 
   cd
-  chmod -R 755 /.local/share/gnome-shell/extensions/*
+  chmod -R 755 /.local/share/gnome-shell/extensions/* #bug
   
   # Install material you icons 
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/nyarch ~/.config
@@ -73,26 +69,30 @@ install_extensions () {
 install_nyaofetch() {
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
-  cp /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch ~
-  cp /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nyaofetch ~
+  cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch .
+  cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nyaofetch .
   # Give the user execution permissions
   sudo chmod +x nekofetch
   sudo chmod +x nyaofetch
 }
 
 configure_neofetch() {
-  get_tarball
   mv ~/.config/fastfetch ~/.config/fastfetch-backup  # Backup previous fastfetch
   # Install new fastfetch files
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/fastfetch ~/.config
 }
 
 download_wallpapers() {
+  # download and install latest wallpaper
   cd /tmp
   wget ${RELEASE_LINK}wallpaper.tar.gz
   tar -xvf wallpaper.tar.gz
-  cd wallpaper 
   bash install.sh
+
+  # installs the rest
+  cd $HOME/.local/share/
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.local/share/backgrounds .
+
 }
 
 # TODO CONTINUE
@@ -120,7 +120,7 @@ configure_kitty (){
   mkdir ~/.config/kitty
   cd ~/.config/kitty
   mv kitty.conf kitty-backup.conf
-  cp /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/kitty.conf ~
+  cp -f /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/kitty.conf ~
 }
 
 
@@ -154,43 +154,9 @@ install_flatpaks() {
 }
 
 install_nyarch_apps() {
-  # Install latest release of CatgirlDownloader through flatpak bundle
-  cd /tmp
-  wget https://github.com/nyarchlinux/catgirldownloader/releases/latest/download/catgirldownloader.flatpak 
-  flatpak install catgirldownloader.flatpak
-
-  # Install latest release of NyarchWizard through flatpak bundle
-  cd /tmp
-  wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/wizard.flatpak 
-  flatpak install wizard.flatpak
-
-  # Install latest release of NyarchTour through flatpak bundle
-  cd /tmp
-  wget https://github.com/nyarchlinux/nyarchtour/releases/latest/download/nyarchtour.flatpak 
-  flatpak install nyarchtour.flatpak
-
-  # Install latest release of NyarchCustomize
-  cd /tmp
-  wget https://github.com/nyarchlinux/nyarchcustomize/releases/latest/download/nyarchcustomize.flatpak 
-  flatpak install nyarchcustomize.flatpak
- 
-  # Install Nyarch Scripts
-  cd /tmp
-  wget https://github.com/nyarchlinux/nyarchscript/releases/latest/download/nyarchscript.flatpak
-  flatpak install nyarchscript.flatpak
-
-  # Install Waifu Downloader
-  cd /tmp 
-  wget https://github.com/nyarchlinux/WaifuDownloader/releases/latest/download/waifudownloader.flatpak
-  flatpak install waifudownloader.flatpak
-  
-}
-
-install_nyarch_assistant() {
-  # Install Nyarch Assistant
-  cd /tmp
-  wget https://github.com/nyarchlinux/nyarchassistant/releases/latest/download/nyarchassistant.flatpak
-  flatpak install nyarchassistant.flatpak
+  # Install latest release of everything
+  cd /tmp/NyarchLinuxComp/Gnome/
+  sh install_flatpaks.sh
 }
 
 install_nyarch_updater() {
@@ -217,9 +183,9 @@ configure_gsettings() {
 }
 
 add_pywal() {
-echo 'if [[ -f "$HOME/.cache/wal/sequences" ]]; then' >> ~/.bashrc
-echo '    (cat $HOME/.cache/wal/sequences)' >> ~/.bashrc
-echo 'fi' >> ~/.bashrc
+  echo 'if [[ -f "$HOME/.cache/wal/sequences" ]]; then' >> ~/.bashrc
+  echo '    (cat $HOME/.cache/wal/sequences)' >> ~/.bashrc
+  echo 'fi' >> ~/.bashrc
 }
 
 
@@ -299,12 +265,6 @@ then
   install_nyarch_apps
   echo "Nyarch apps installed!"
 fi
-read -r -p "[SYSTEM] Do you want to install Nyarch Assistant, our Waifu AI Assistant? (Y/n): " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
-then 
-  install_nyarch_assistant
-  echo "Nyarch Assistant installed!"
-fi 
 read -r -p "[SYSTEM] Do you want to install Nyarch Updater? It's going to have some issues outside of Nyarch and Arch in general (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -316,7 +276,7 @@ read -r -p "Do you want to edit your Gnome settings? Note that if you have not i
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   configure_gsettings
-  echo "Nyarch apps installed!"
+  echo "Gnome settings updated"
 fi
 
 
