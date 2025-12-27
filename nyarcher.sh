@@ -106,8 +106,7 @@ download_wallpapers() {
 
 # TODO CONTINUE
 download_icons() {
-  get_tarball
-  cd /tmp 
+  cd /tmp in
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
   cp -rf Tela-circle-MaterialYou-6d3900 ~/.local/share/icons/ #you may want to update the number (Tela-circle-MaterialYou-6d3900)
@@ -148,7 +147,6 @@ install_flatpaks() {
 }
 
 install_nyarch_updater() {
-  get_tarball
   # Install Nyarch Updater
   cd /tmp
   wget https://github.com/nyarchlinux/nyarchupdater/releases/latest/download/nyarchupdater.flatpak
