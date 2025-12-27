@@ -100,13 +100,12 @@ download_icons() {
   cd /tmp 
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
-  cp -rf Tela-circle-MaterialYou-6d3900 ~/.local/share/icons/Tela-circle-MaterialYou #you may want to update the number (Tela-circle-MaterialYou-6d3900)
+  cp -rf Tela-circle-MaterialYou-6d3900 ~/.local/share/icons/ #you may want to update the number (Tela-circle-MaterialYou-6d3900)
 }
 
 set_themes() {
   cd ~/.local/share
   mv themes themes-backup  # Backup icons
-  get_tarball
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.local/share/themes ~/.local/share
   cd ~/.config
   # Set GTK4 and GTK3 themes
@@ -117,12 +116,10 @@ set_themes() {
 }
 
 configure_kitty (){
-  mkdir ~/.config/kitty
-  cd ~/.config/kitty
-  mv kitty.conf kitty-backup.conf
-  cp -f /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/kitty.conf ~
+  cd ~/.config/
+  mv ~/.config/kitty/kitty.conf kitty-backup.conf
+  cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/ .
 }
-
 
 flatpak_overrides() {
   sudo flatpak override --filesystem=xdg-config/gtk-3.0
