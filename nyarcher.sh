@@ -130,7 +130,7 @@ flatpak_overrides() {
 }
 
 
-install_flatpaks() {
+install_flatpaks() { #remove this ##############################dwajndjwaiuhdiuuuuehwuiduewhdhiuwhdhiufjiesifvsfcjsvnsuvhsiuhviushviuhsiufvhius
   # Add flathub
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   # Themes
