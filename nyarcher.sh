@@ -5,6 +5,7 @@ RELEASE_LINK="github.com/NyarchLinux/NyarchLinux/releases/latest/download/"
 
 RED='\033[0;31m'
 NC='\033[0m'
+tarball_downloaded="false"
 
 curl https://raw.githubusercontent.com/NyarchLinux/NyarchLinux/main/Gnome/etc/skel/.config/neofetch/ascii70
 echo -e "$RED\n\nWelcome to Nyarch Linux customization installer! $NC"
@@ -29,6 +30,7 @@ check_gnome_is_running() {
 }
 
 get_tarball() {
+  if [ "$meine_variable" = "false" ]; then
     file_path=/tmp/NyarchLinux.tar.gz
     url=${RELEASE_LINK}NyarchLinux.tar.gz
 
@@ -36,9 +38,13 @@ get_tarball() {
     wget -q -O "$file_path" "$url"
     cd /tmp
     tar -xf "$file_path"
+
+    tarball_downloaded="true"
+  fi
 }
 
 install_extensions () {
+  get_tarball
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
   echo "Backup old extensions to extensions-backup..."
   mv -f extensions extensions-backup  # Backup old extensions 
@@ -67,6 +73,7 @@ install_extensions () {
 }
 
 install_nyaofetch() {
+  get_tarball
   cd /usr/bin # Install nekofetch and nyaofetch
   # Download scripts
   sudo cp -rf /tmp/NyarchLinuxComp/Gnome/usr/local/bin/nekofetch .
@@ -77,12 +84,14 @@ install_nyaofetch() {
 }
 
 configure_neofetch() {
+  get_tarball
   mv ~/.config/fastfetch ~/.config/fastfetch-backup  # Backup previous fastfetch
   # Install new fastfetch files
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/fastfetch ~/.config
 }
 
 download_wallpapers() {
+  get_tarball
   # download and install latest wallpaper
   cd /tmp
   wget ${RELEASE_LINK}wallpaper.tar.gz
@@ -97,6 +106,7 @@ download_wallpapers() {
 
 # TODO CONTINUE
 download_icons() {
+  get_tarball
   cd /tmp 
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
@@ -104,6 +114,7 @@ download_icons() {
 }
 
 set_themes() {
+  get_tarball
   cd ~/.local/share
   mv themes themes-backup  # Backup icons
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.local/share/themes ~/.local/share
@@ -116,6 +127,7 @@ set_themes() {
 }
 
 configure_kitty (){
+  get_tarball
   cd ~/.config/
   mv ~/.config/kitty/kitty.conf kitty-backup.conf
   cp -rf /tmp/NyarchLinuxComp/Gnome/etc/skel/.config/kitty/ .
@@ -127,6 +139,7 @@ flatpak_overrides() {
 }
 
 install_flatpaks() {
+  get_tarball
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
   # Install latest release of everything
@@ -135,6 +148,7 @@ install_flatpaks() {
 }
 
 install_nyarch_updater() {
+  get_tarball
   # Install Nyarch Updater
   cd /tmp
   wget https://github.com/nyarchlinux/nyarchupdater/releases/latest/download/nyarchupdater.flatpak
@@ -143,6 +157,7 @@ install_nyarch_updater() {
 }
 
 configure_gsettings() {
+  get_tarball
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
   cd /tmp/NyarchLinuxComp/Gnome/etc/dconf/db/local.d
   # Load settings
@@ -168,7 +183,6 @@ read -r -p "Have you installed all the dependecies listed in the github page of 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   echo Cool! We can go ahead
-  get_tarball
 else
   echo You need to have already installed the dependencies listed on github before running this script!
   exit
@@ -180,6 +194,7 @@ then
   install_extensions
   echo "Gnome extensions installed!"
 fi
+
 read -r -p "[SYSTEM] Do you want to install Nekofetch and Nyaofetch and configure neofetch, to tell everyone that you use nyarch btw? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -187,48 +202,56 @@ then
   configure_neofetch
   echo "Nyaofetch and Neofetch installed!"
 fi
+
 read -r -p "Download Nyarch wallpapers? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   download_wallpapers
   echo "Wallpapers downloaded!"
 fi
+
 read -r -p "Do you want to download our icons? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   download_icons
   echo "Icons downloaded!"
 fi
+
 read -r -p "Do you want to download our themes? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   set_themes
   echo "Themes downloaded!"
 fi
+
 read -r -p "Do you want to apply our customizations to kitty terminal? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   configure_kitty
   echo "Kitty configured!"
 fi
+
 read -r -p "Do you want to add pywal theming to your ~/.bashrc (for other shells you have to do it manually)? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   add_pywal
   echo "pywal configured!"
 fi
+
 read -r -p "Do you want to apply your GTK themes to flatpak apps? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   flatpak_overrides
   echo "Flatpak themes configured!"
 fi
+
 read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (includes Nyarch Exclusive applications)? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   install_flatpaks
   echo "Suggested apps installed!"
 fi
+
 read -r -p "[SYSTEM] Do you want to install Nyarch Updater? It's going to have some issues outside of Nyarch and Arch in general (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
@@ -244,7 +267,4 @@ then
 fi
 
 
-
 echo -e "$RED Log out and login to see the results! $NC"
-
-
