@@ -129,17 +129,9 @@ flatpak_overrides() {
   sudo flatpak override --filesystem=xdg-config/gtk-4.0
 }
 
-
-install_flatpaks() { #remove this ##############################dwajndjwaiuhdiuuuuehwuiduewhdhiuwhdhiufjiesifvsfcjsvnsuvhsiuhviushviuhsiufvhius
-  # Add flathub
+install_flatpaks() {
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  # Themes
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-  # Komikku
-  flatpak install flathub info.febvre.Komikku com.github.tchx84.Flatseal de.haeckerfelix.Shortwave org.gnome.Lollypop de.haeckerfelix.Fragments com.mattjakeman.ExtensionManager it.mijorus.gearlever
-}
-
-install_nyarch_apps() {
   # Install latest release of everything
   cd /tmp/NyarchLinuxComp/Gnome/
   sh install_flatpaks.sh
@@ -154,12 +146,7 @@ install_nyarch_updater() {
 }
 
 configure_gsettings() {
-  check_gnome_version
-  check_gnome_is_running
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
-  cd /tmp
-  # Download default settings
-  get_tarball
   cd /tmp/NyarchLinuxComp/Gnome/etc/dconf/db/local.d
   # Load settings
   dconf load / < 06-extensions  # Load extensions settings
@@ -239,17 +226,11 @@ then
   flatpak_overrides
   echo "Flatpak themes configured!"
 fi
-read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (You will be able to not download only some of them)? (Y/n): " response
+read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (includes Nyarch Exclusive applications)? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   install_flatpaks
   echo "Suggested apps installed!"
-fi
-read -r -p "[SYSTEM] Do you want to install Nyarch Exclusive applications? (Y/n): " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
-  install_nyarch_apps
-  echo "Nyarch apps installed!"
 fi
 read -r -p "[SYSTEM] Do you want to install Nyarch Updater? It's going to have some issues outside of Nyarch and Arch in general (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
