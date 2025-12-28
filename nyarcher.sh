@@ -30,7 +30,7 @@ check_gnome_is_running() {
 }
 
 get_tarball() {
-  if [ "$meine_variable" = "false" ]; then
+  if [ "$tarball_downloaded" = "false" ]; then
     file_path=/tmp/NyarchLinux.tar.gz
     url=${RELEASE_LINK}NyarchLinux.tar.gz
 
