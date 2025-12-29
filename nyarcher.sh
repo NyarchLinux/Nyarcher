@@ -44,6 +44,8 @@ get_tarball() {
 }
 
 install_extensions () {
+  check_gnome_version
+  check_gnome_is_running
   get_tarball
   cd ~/.local/share/gnome-shell  # Go to Gnome extensions config folder 
   echo "Backup old extensions to extensions-backup..."
@@ -96,6 +98,7 @@ download_wallpapers() {
   cd /tmp
   wget ${RELEASE_LINK}wallpaper.tar.gz
   tar -xvf wallpaper.tar.gz
+  cd wallpaper
   sh install.sh
 
   # installs the rest
@@ -106,10 +109,10 @@ download_wallpapers() {
 
 # TODO CONTINUE
 download_icons() {
-  cd /tmp in
+  cd /tmp
   wget ${RELEASE_LINK}icons.tar.gz
   tar -xvf icons.tar.gz
-  cp -rf Tela-circle-MaterialYou-6d3900 ~/.local/share/icons/ #you may want to update the number (Tela-circle-MaterialYou-6d3900)
+  cp -rf Tela-circle-MaterialYou* ~/.local/share/icons/ #you may want to update the number (Tela-circle-MaterialYou-6d3900)
 }
 
 set_themes() {
@@ -137,13 +140,52 @@ flatpak_overrides() {
   sudo flatpak override --filesystem=xdg-config/gtk-4.0
 }
 
+#install_flatpaks() {
+#  get_tarball
+#  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+#  flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+#  # Install latest release of everything
+#  cd /tmp/NyarchLinuxComp/Gnome/
+#  sh install_flatpaks.sh
+#}
 install_flatpaks() {
-  get_tarball
+  # Add flathub
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  # Themes
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-  # Install latest release of everything
-  cd /tmp/NyarchLinuxComp/Gnome/
-  sh install_flatpaks.sh
+  #other stuff :3
+  flatpak install flathub info.febvre.Komikku com.github.tchx84.Flatseal de.haeckerfelix.Shortwave org.gnome.Lollypop de.haeckerfelix.Fragments com.mattjakeman.ExtensionManager it.mijorus.gearlever
+}
+
+install_nyarch_apps() {
+  cd /tmp
+  # Install latest release of CatgirlDownloader through flatpak bundle
+  wget https://github.com/nyarchlinux/catgirldownloader/releases/latest/download/catgirldownloader.flatpak 
+  flatpak install catgirldownloader.flatpak
+
+  # Install latest release of NyarchWizard through flatpak bundle
+  wget https://github.com/nyarchlinux/nyarchwizard/releases/latest/download/wizard.flatpak 
+  flatpak install wizard.flatpak
+
+  # Install latest release of NyarchTour through flatpak bundle
+  wget https://github.com/nyarchlinux/nyarchtour/releases/latest/download/nyarchtour.flatpak 
+  flatpak install nyarchtour.flatpak
+
+  # Install latest release of NyarchCustomize
+  wget https://github.com/nyarchlinux/nyarchcustomize/releases/latest/download/nyarchcustomize.flatpak 
+  flatpak install nyarchcustomize.flatpak
+ 
+  # Install Nyarch Scripts
+  wget https://github.com/nyarchlinux/nyarchscript/releases/latest/download/nyarchscript.flatpak
+  flatpak install nyarchscript.flatpak
+
+  # Install Waifu Downloader
+  wget https://github.com/nyarchlinux/WaifuDownloader/releases/latest/download/waifudownloader.flatpak
+  flatpak install waifudownloader.flatpak
+  
+  #nyarch assistant
+  wget https://github.com/nyarchlinux/nyarchassistant/releases/latest/download/nyarchassistant.flatpak
+  flatpak install nyarchassistant.flatpak
 }
 
 install_nyarch_updater() {
@@ -155,6 +197,8 @@ install_nyarch_updater() {
 }
 
 configure_gsettings() {
+  check_gnome_version
+  check_gnome_is_running
   get_tarball
   dconf dump / > ~/dconf-backup.txt  # Save old gnome settings
   cd /tmp/NyarchLinuxComp/Gnome/etc/dconf/db/local.d
@@ -174,8 +218,6 @@ add_pywal() {
 
 ## EXECUTION PART
 
-check_gnome_version
-check_gnome_is_running
 
 read -r -p "Have you installed all the dependecies listed in the github page of this script? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
