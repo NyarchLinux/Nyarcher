@@ -153,8 +153,22 @@ install_flatpaks() {
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   # Themes
   flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-  #other stuff :3
-  flatpak install flathub info.febvre.Komikku com.github.tchx84.Flatseal de.haeckerfelix.Shortwave org.gnome.Lollypop de.haeckerfelix.Fragments com.mattjakeman.ExtensionManager it.mijorus.gearlever
+  # Komikku
+  flatpak install flathub info.febvre.Komikku
+  # Flatseal
+  flatpak install flathub com.github.tchx84.Flatseal
+  # Shortwave
+  flatpak install flathub de.haeckerfelix.Shortwave
+  # Lollypop
+  flatpak install flathub org.gnome.Lollypop
+  # Fragments
+  flatpak install flathub de.haeckerfelix.Fragments
+  # Flatseal
+  flatpak install flathub com.github.tchx84.Flatseal
+  # Extension Manager
+  flatpak install flathub com.mattjakeman.ExtensionManager
+  # GearLever
+  flatpak install flathub it.mijorus.gearlever
 }
 
 install_nyarch_apps() {
@@ -285,11 +299,17 @@ then
   echo "Flatpak themes configured!"
 fi
 
-read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (includes Nyarch Exclusive applications)? (Y/n): " response
+read -r -p "Do you want to install suggested flatpaks to enhance your weebflow (You will be able to not download only some of them)? (Y/n): " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
   install_flatpaks
   echo "Suggested apps installed!"
+fi
+read -r -p "[SYSTEM] Do you want to install Nyarch Exclusive applications? (Y/n): " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  install_nyarch_apps
+  echo "Nyarch apps installed!"
 fi
 
 read -r -p "[SYSTEM] Do you want to install Nyarch Updater? It's going to have some issues outside of Nyarch and Arch in general (Y/n): " response
